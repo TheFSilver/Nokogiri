@@ -43,14 +43,16 @@ def deputees_pages(links)
 end
 
 deputees_pages(deputees_link)
-puts "Cette opération peut prendre quelques minutes selon la configuration de votre matériel..."
+puts "Cette opération peut durer un long moment selon la configuration de votre matériel..."
 
 # Code pour récupérer l'adresse mail d'un député
 def deputees_mails(emails_array, url_array)
-  page = Nokogiri::HTML(open(url_array))
-  page.css('#haut-contenu-page > article > div.contenu-principal.en-direct-commission.clearfix > div > dl > dd:nth-child(8) > ul > li:nth-child(1) > a').each do |email|
-    if email['href'][7..-1].include?('@')
+  doc = Nokogiri::HTML(open(url_array))
+  x=0
+  doc.xpath("//*[@id='haut-contenu-page']/article/div[3]/div/dl/dd/ul/li/a[starts-with(@href,'mailto')]").each do |email|
+    if email['href'][7..-1].include?('@') && x == 0
       emails_array << email['href'][7..-1]
+        x +=1
     else
       emails_array << "no email found"
     end
@@ -66,8 +68,8 @@ end
 x = 0
 while x < deputees_name.size
   deputees_array << { "prenom" => deputees_firstname[x], "nom" => deputees_lastname[x], "email" => deputees_email[x] }
-    puts "\n*************************************************************************************"
+    puts "\n******************************************************************************************************************"
     puts deputees_array[x]
-    puts "*************************************************************************************\n"
+    puts "******************************************************************************************************************\n"
   x += 1
 end
