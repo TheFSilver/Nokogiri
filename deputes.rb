@@ -52,9 +52,7 @@ def deputees_mails(emails_array, url_array)
   doc.xpath("//*[@id='haut-contenu-page']/article/div[3]/div/dl/dd/ul/li/a[starts-with(@href,'mailto')]").each do |email|
     if email['href'][7..-1].include?('@') && x == 0
       emails_array << email['href'][7..-1]
-        x +=1
-    else
-      emails_array << "no email found"
+      x += 1
     end
   end
 end
